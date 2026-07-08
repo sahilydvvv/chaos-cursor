@@ -4,6 +4,7 @@ const registerSocketHandlers = (io) => {
 
     socket.on('mousemove', (data) => {
       console.log(`Mouse moved to: x=${data.x}, y=${data.y}`);
+      socket.broadcast.emit('mousemoveall', data);
     });
 
     socket.on('disconnect', () => {
