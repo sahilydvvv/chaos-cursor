@@ -2,8 +2,12 @@ import { useEffect } from 'react';
 import React from 'react'
 import { socket } from '../socket.io.js';
 function Canvas() {
+
     useEffect(() => {
     const handleMouseMove = ({ clientX, clientY }) => {
+      const box = document.querySelector(".cursor");
+      box.style.left = `${clientX}px`;
+      box.style.top = `${clientY}px`;
       console.log("Sending:", clientX, clientY);
 
       socket.emit("mousemove", {
@@ -29,7 +33,11 @@ function Canvas() {
     socket.on("disconnect", handleDisconnect);
     socket.on("connect_error", handleConnectError);
     socket.on("mousemoveall", (data) => {
-      console.log("Received:", data);
+      const box = document.querySelector(".cursor-socket");
+      box.style.left = `${data.x}px`;
+      box.style.top = `${data.y}px`;
+      
+      console.log("Received:", data.x, data.y);
     });
 
     return () => {
@@ -42,7 +50,12 @@ function Canvas() {
   }, []);
   return (
     <div className="canvas">
-
+      <div className="cursor"> 
+        <h3>first</h3>
+      </div>
+      <div className="cursor-socket"> 
+        <h3>second</h3>  
+      </div>
     </div>
   )
 }
